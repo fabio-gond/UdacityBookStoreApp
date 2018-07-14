@@ -15,7 +15,7 @@ public final class BookContract {
      * content authority is the package name for the app, which is guaranteed to be unique on the
      * device.
      */
-    public static final String CONTENT_AUTHORITY = "com.example.fabio.udacity_bookstoreapp";
+    public static final String CONTENT_AUTHORITY = "com.example.fabio.udacity_bookstoreapp.books";
 
     /**
      * Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact

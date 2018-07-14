@@ -17,6 +17,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditorActivity"></activity>
+        <provider
+            android:name=".data.BookProvider"
+            android:authorities="com.example.fabio.udacity_bookstoreapp.books"
+            android:exported="false" />
     </application>
 
 </manifest>
