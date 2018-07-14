@@ -8,4 +8,8 @@
     <string name="editor_book_quantity">Quantity</string>
     <string name="editor_supplier">Supplier</string>
     <string name="editor_currency">$</string>
+    <string name="menu_editor_save">Save</string>
+    <string name="menu_editor_delete">Delete</string>
+    <string name="menu_main_delete_all_books">Delete all books</string>
+    <string name="menu_main_insert_dummy_data">Insert dummy data</string>
 </resources>
