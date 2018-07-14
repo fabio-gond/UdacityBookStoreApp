@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Udacity-BookStoreApp</string>
+    <string name="main_emptydata_subtitle">Start adding a book.</string>
+    <string name="main_emptydata_title">There are no books in the store.</string>
+    <string name="editor_overview">Overview</string>
+    <string name="editor_book_name">Book Name</string>
+    <string name="editor_book_price">Price</string>
+    <string name="editor_book_quantity">Quantity</string>
+    <string name="editor_supplier">Supplier</string>
+    <string name="editor_currency">$</string>
 </resources>
