@@ -22,11 +22,12 @@ import com.example.fabio.udacity_bookstoreapp.data.BookContract.BookEntry;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
     /** Identifier for the pet data loader */
     private static final int BOOK_LOADER = 0;
 
     /** Adapter for the ListView */
-    BookCursorAdapter mCursorAdapter;
+    private BookCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         // Setup FAB to open EditorActivity
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements
         });
 
         // Find the ListView which will be populated with the book data
-        ListView bookListView = (ListView) findViewById(R.id.list);
+        ListView bookListView = findViewById(R.id.list);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements
         // into the books database table.
         // Receive the new content URI that will allow us to access book's data in the future.
         Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
+        Log.v(LOG_TAG , "Added row wih uri: " + newUri);
     }
 
     /**
@@ -139,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements
         String[] projection = {
                 BookEntry._ID,
                 BookEntry.COLUMN_BOOK_NAME,
+                BookEntry.COLUMN_BOOK_SUPP_NAME,
                 BookEntry.COLUMN_BOOK_PRICE };
 
         // This loader will execute the ContentProvider's query method on a background thread

@@ -25,20 +25,24 @@ public class BookCursorAdapter extends CursorAdapter{
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find individual views that we want to modify in the list item layout
-        TextView nameTextView = (TextView) view.findViewById(R.id.name);
-        TextView summaryTextView = (TextView) view.findViewById(R.id.summary);
+        TextView nameTextView = view.findViewById(R.id.name);
+        TextView summaryTextView = view.findViewById(R.id.summary);
+        TextView priceTextView = view.findViewById(R.id.price);
 
         // Find the columns of book attributes that we're interested in
         int nameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_NAME);
+        int suppNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_SUPP_NAME);
         int priceColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PRICE);
 
         // Read the book attributes from the Cursor for the current book
         String bookName = cursor.getString(nameColumnIndex);
-        String bookPrice = cursor.getString(priceColumnIndex);
+        String suppName = cursor.getString(suppNameColumnIndex);
+        Float bookPrice = cursor.getFloat(priceColumnIndex);
 
 
         // Update the TextViews with the attributes for the current book
         nameTextView.setText(bookName);
-        summaryTextView.setText(bookPrice);
+        summaryTextView.setText(suppName);
+        priceTextView.setText(String.format("%10.2f" , bookPrice));
     }
 }

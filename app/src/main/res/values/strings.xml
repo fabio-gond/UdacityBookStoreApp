@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Udacity-BookStoreApp</string>
+    <string name="app_name">Books Store</string>
     <string name="main_emptydata_subtitle">Start adding a book.</string>
     <string name="main_emptydata_title">There are no books in the store.</string>
-    <string name="editor_overview">Overview</string>
+    <string name="editor_overview">Details</string>
     <string name="editor_book_name">Book Name</string>
     <string name="editor_book_price">Price</string>
     <string name="editor_book_quantity">Quantity</string>
@@ -26,4 +26,8 @@
     <string name="delete_dialog_msg">Delete this book?</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="editor_empty_name">The name of the book can\'t be empty</string>
+    <string name="editor_invalid_price">You must insert a valid price</string>
+    <string name="editor_supplier_name">Name</string>
+    <string name="editor_supplier_phone_number">Phone Number</string>
 </resources>

@@ -17,10 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.fabio.udacity_bookstoreapp.data.BookContract.BookEntry;
@@ -46,6 +43,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     /** EditText field to enter the book's price */
     private EditText mSuppPhoneEditText;
+
+    private boolean canExit = false;
 
 
     /** Boolean flag that keeps track of whether the book has been edited (true) or not (false) */
@@ -92,11 +91,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
 
         // Find all relevant views that we will need to read user input from
-        mNameEditText = (EditText) findViewById(R.id.edit_book_name);
-        mPriceEditText = (EditText) findViewById(R.id.edit_book_price);
-        mQuantityEditText = (EditText) findViewById(R.id.edit_book_quantity);
-        mSuppNameEditText = (EditText) findViewById(R.id.edit_supplier_name);
-        mSuppPhoneEditText = (EditText) findViewById(R.id.edit_supplier_phone);
+        mNameEditText = findViewById(R.id.edit_book_name);
+        mPriceEditText =  findViewById(R.id.edit_book_price);
+        mQuantityEditText =  findViewById(R.id.edit_book_quantity);
+        mSuppNameEditText =  findViewById(R.id.edit_supplier_name);
+        mSuppPhoneEditText =  findViewById(R.id.edit_supplier_phone);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -113,6 +112,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * Get user input from editor and save book into database.
      */
     private void saveBook() {
+        canExit = true;
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         String nameString = mNameEditText.getText().toString().trim();
@@ -129,6 +129,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 TextUtils.isEmpty(suppPhoneString) ) {
             // Since no fields were modified, we can return early without creating a new book.
             // No need to create ContentValues and no need to do any ContentProvider operations.
+            return;
+        }
+
+        if(TextUtils.isEmpty(nameString)){
+            Toast.makeText(this, getString(R.string.editor_empty_name),
+                    Toast.LENGTH_SHORT).show();
+            canExit=false;
+            return;
+        }
+
+        if(TextUtils.isEmpty(priceString)){
+            Toast.makeText(this, getString(R.string.editor_invalid_price),
+                    Toast.LENGTH_SHORT).show();
+            canExit=false;
             return;
         }
 
@@ -220,8 +234,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             case R.id.menu_editor_save:
                 // Save book to database
                 saveBook();
-                // Exit activity
-                finish();
+                if(canExit){
+                    // Exit activity
+                    finish();
+                }
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.menu_editor_delete:
@@ -329,7 +345,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
-            mPriceEditText.setText(price.toString());
+            mPriceEditText.setText(String.format("%10.2f" , price));
             mQuantityEditText.setText(String.valueOf(quantity));
             mSuppNameEditText.setText(suppName);
             mSuppPhoneEditText.setText(suppPhone);
