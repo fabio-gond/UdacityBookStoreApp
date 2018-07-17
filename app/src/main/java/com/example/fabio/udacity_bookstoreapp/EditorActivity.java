@@ -129,6 +129,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 TextUtils.isEmpty(suppPhoneString) ) {
             // Since no fields were modified, we can return early without creating a new book.
             // No need to create ContentValues and no need to do any ContentProvider operations.
+            Toast.makeText(this, "Fill the fields to save the new book",
+                    Toast.LENGTH_SHORT).show();
+            canExit=false;
             return;
         }
 
