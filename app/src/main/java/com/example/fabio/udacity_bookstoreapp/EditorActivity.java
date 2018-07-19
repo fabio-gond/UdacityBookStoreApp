@@ -1,5 +1,6 @@
 package com.example.fabio.udacity_bookstoreapp;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -7,8 +8,10 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fabio.udacity_bookstoreapp.data.BookContract.BookEntry;
@@ -36,13 +40,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mPriceEditText;
 
     /** EditText field to enter the book's price */
-    private EditText mQuantityEditText;
+    private TextView mQuantityTextView;
 
     /** EditText field to enter the book's price */
     private EditText mSuppNameEditText;
 
     /** EditText field to enter the book's price */
     private EditText mSuppPhoneEditText;
+
+    private String supplierPhone;
 
     private boolean canExit = false;
 
@@ -92,20 +98,41 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // Find all relevant views that we will need to read user input from
         mNameEditText = findViewById(R.id.edit_book_name);
-        mPriceEditText =  findViewById(R.id.edit_book_price);
-        mQuantityEditText =  findViewById(R.id.edit_book_quantity);
-        mSuppNameEditText =  findViewById(R.id.edit_supplier_name);
-        mSuppPhoneEditText =  findViewById(R.id.edit_supplier_phone);
+        mPriceEditText = findViewById(R.id.edit_book_price);
+        mQuantityTextView = findViewById(R.id.quantity_text_view);
+        mSuppNameEditText = findViewById(R.id.edit_supplier_name);
+        mSuppPhoneEditText = findViewById(R.id.edit_supplier_phone);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
         // or not, if the user tries to leave the editor without saving.
         mNameEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
-        mQuantityEditText.setOnTouchListener(mTouchListener);
+        mQuantityTextView.setOnTouchListener(mTouchListener);
         mSuppNameEditText.setOnTouchListener(mTouchListener);
         mSuppPhoneEditText.setOnTouchListener(mTouchListener);
 
+    }
+
+    public void decrementQta (View view){
+        int qta = Integer.valueOf(mQuantityTextView.getText().toString())  ;
+        if (qta>0) qta--;
+        mQuantityTextView.setText(String.valueOf(qta));
+    }
+
+    public void incrementQta (View view){
+        int qta = Integer.valueOf(mQuantityTextView.getText().toString())  ;
+        qta++;
+        mQuantityTextView.setText(String.valueOf(qta));
+    }
+
+    public void callSupplier(View view) {
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + this.supplierPhone));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+            return;
+        }
+        startActivity(intent);
     }
 
     /**
@@ -117,7 +144,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Use trim to eliminate leading or trailing white space
         String nameString = mNameEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
-        String quantityString = mQuantityEditText.getText().toString().trim();
+        String quantityString = mQuantityTextView.getText().toString().trim();
         String suppNameString = mSuppNameEditText.getText().toString().trim();
         String suppPhoneString = mSuppPhoneEditText.getText().toString().trim();
 
@@ -349,10 +376,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
             mPriceEditText.setText(String.format("%10.2f" , price));
-            mQuantityEditText.setText(String.valueOf(quantity));
+            mQuantityTextView.setText(String.valueOf(quantity));
             mSuppNameEditText.setText(suppName);
             mSuppPhoneEditText.setText(suppPhone);
-
+            this.supplierPhone = suppPhone;
         }
     }
 
@@ -361,7 +388,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // If the loader is invalidated, clear out all the data from the input fields.
         mNameEditText.setText("");
         mPriceEditText.setText("");
-        mQuantityEditText.setText("");
+        mQuantityTextView.setText("");
         mSuppNameEditText.setText("");
         mSuppPhoneEditText.setText("");
     }

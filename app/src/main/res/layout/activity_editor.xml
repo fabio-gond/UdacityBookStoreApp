@@ -56,11 +56,37 @@
             </RelativeLayout>
 
             <!-- Qta field -->
-            <EditText
+            <!--<EditText
                 android:id="@+id/edit_book_quantity"
                 android:hint="@string/editor_book_quantity"
                 android:inputType="number"
-                style="@style/EditorFieldStyle" />
+                style="@style/EditorFieldStyle" />-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/QuantityPickerButtonStyle"
+                    android:onClick="decrementQta"
+                    android:text="-" />
+
+                <TextView
+                    android:id="@+id/quantity_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="0"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <Button
+                    style="@style/QuantityPickerButtonStyle"
+                    android:onClick="incrementQta"
+                    android:text="+" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
@@ -101,9 +127,12 @@
                 android:inputType="phone"
                 style="@style/EditorFieldStyle" />
         </LinearLayout>
-
-
-
-
     </LinearLayout>
+
+    <Button
+        android:layout_marginTop="30dp"
+        android:text="@string/editor_call_the_supplier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="callSupplier"/>
 </LinearLayout>

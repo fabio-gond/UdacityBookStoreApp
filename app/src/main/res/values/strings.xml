@@ -30,4 +30,5 @@
     <string name="editor_invalid_price">You must insert a valid price</string>
     <string name="editor_supplier_name">Name</string>
     <string name="editor_supplier_phone_number">Phone Number</string>
+    <string name="editor_call_the_supplier">Call the Supplier</string>
 </resources>
