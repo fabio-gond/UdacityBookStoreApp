@@ -28,7 +28,14 @@
     <string name="cancel">Cancel</string>
     <string name="editor_empty_name">The name of the book can\'t be empty</string>
     <string name="editor_invalid_price">You must insert a valid price</string>
+    <string name="editor_invalid_suppName">You must insert a valid supplier name</string>
+    <string name="editor_invalid_suppPhone">You must insert a valid supplier phone</string>
     <string name="editor_supplier_name">Name</string>
     <string name="editor_supplier_phone_number">Phone Number</string>
     <string name="editor_call_the_supplier">Call the Supplier</string>
+    <string name="edit_toast_emptyFields">Set all the fields to save the new book</string>
+    <string name="pieces_abbr">pcs</string>
+    <string name="main_book_sold">The book has been sold</string>
+    <string name="main_zero_books">There are no more available books</string>
+    <string name="item_sale">Sale</string>
 </resources>

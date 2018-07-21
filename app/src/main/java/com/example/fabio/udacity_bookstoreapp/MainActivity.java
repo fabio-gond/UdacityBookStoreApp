@@ -17,17 +17,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.fabio.udacity_bookstoreapp.data.BookContract.BookEntry;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
+
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     /** Identifier for the pet data loader */
     private static final int BOOK_LOADER = 0;
 
+    /** Identifier for the book data loader */
+    private static final int SALE_BOOK_LOADER = 1;
+
     /** Adapter for the ListView */
     private BookCursorAdapter mCursorAdapter;
+
+    private Uri mCurrentBookUri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +86,15 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
+
+
         // Kick off the loader
         getLoaderManager().initLoader(BOOK_LOADER, null, this);
+    }
+
+    public void saleBook(long id){
+        mCurrentBookUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
+        getLoaderManager().initLoader(SALE_BOOK_LOADER, null, this);
     }
 
     /**
@@ -141,8 +156,18 @@ public class MainActivity extends AppCompatActivity implements
         String[] projection = {
                 BookEntry._ID,
                 BookEntry.COLUMN_BOOK_NAME,
+                BookEntry.COLUMN_BOOK_QUANTITY,
                 BookEntry.COLUMN_BOOK_SUPP_NAME,
                 BookEntry.COLUMN_BOOK_PRICE };
+
+        if (i == SALE_BOOK_LOADER ){
+            return new CursorLoader(this,   // Parent activity context
+                    mCurrentBookUri,   // Provider content URI to query
+                    projection,             // Columns to include in the resulting Cursor
+                    null,                   // No selection clause
+                    null,                   // No selection arguments
+                    null);                  // Default sort order
+        }
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -154,9 +179,44 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        if (loader.getId()== SALE_BOOK_LOADER){
+
+            // Bail early if the cursor is null or there is less than 1 row in the cursor
+            if (cursor == null || cursor.getCount() < 1) {
+                return;
+            }
+
+            // Proceed with moving to the first row of the cursor and reading data from it
+            // (This should be the only row in the cursor)
+            if (cursor.moveToFirst()) {
+                int quantityColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_QUANTITY);
+                int quantity = cursor.getInt(quantityColumnIndex);
+                if (quantity>0){
+                    // Reduce the quantity of the current book and display a toast to the user
+                    quantity--;
+                    ContentValues values = new ContentValues();
+                    values.put(BookEntry.COLUMN_BOOK_QUANTITY, quantity);
+
+                   int rowsAffected = getContentResolver().update(mCurrentBookUri, values, null, null);
+                   if (rowsAffected>0){
+                       Toast.makeText(this,getString(R.string.main_book_sold),
+                               Toast.LENGTH_SHORT).show();
+                   }
+                }else{
+                    Toast.makeText(this,getString(R.string.main_zero_books),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            getLoaderManager().destroyLoader(SALE_BOOK_LOADER);
+
+            return;
+        }
         // Update {@link BookCursorAdapter} with this new cursor containing updated book data
-        mCursorAdapter.swapCursor(data);
+        mCursorAdapter.swapCursor(cursor);
+
     }
 
     @Override

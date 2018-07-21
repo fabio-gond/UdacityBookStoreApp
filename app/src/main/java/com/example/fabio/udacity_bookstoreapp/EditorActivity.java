@@ -3,6 +3,7 @@ package com.example.fabio.udacity_bookstoreapp;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
@@ -156,7 +157,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 TextUtils.isEmpty(suppPhoneString) ) {
             // Since no fields were modified, we can return early without creating a new book.
             // No need to create ContentValues and no need to do any ContentProvider operations.
-            Toast.makeText(this, "Fill the fields to save the new book",
+            Toast.makeText(this, R.string.edit_toast_emptyFields,
                     Toast.LENGTH_SHORT).show();
             canExit=false;
             return;
@@ -171,6 +172,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         if(TextUtils.isEmpty(priceString)){
             Toast.makeText(this, getString(R.string.editor_invalid_price),
+                    Toast.LENGTH_SHORT).show();
+            canExit=false;
+            return;
+        }
+
+        if(TextUtils.isEmpty(suppNameString)){
+            Toast.makeText(this, getString(R.string.editor_invalid_suppName),
+                    Toast.LENGTH_SHORT).show();
+            canExit=false;
+            return;
+        }
+
+        if(TextUtils.isEmpty(suppPhoneString)){
+            Toast.makeText(this, getString(R.string.editor_invalid_suppPhone),
                     Toast.LENGTH_SHORT).show();
             canExit=false;
             return;
