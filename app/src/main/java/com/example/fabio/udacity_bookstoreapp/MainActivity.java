@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private Uri mCurrentBookUri;
 
+    private ListView bookListView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements
         });
 
         // Find the ListView which will be populated with the book data
-        ListView bookListView = findViewById(R.id.list);
+        bookListView = findViewById(R.id.list);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
@@ -92,7 +94,10 @@ public class MainActivity extends AppCompatActivity implements
         getLoaderManager().initLoader(BOOK_LOADER, null, this);
     }
 
-    public void saleBook(long id){
+
+    public void saleBook(View ListItem){
+        final int position = bookListView.getPositionForView(ListItem);
+        final long id = bookListView.getItemIdAtPosition(position);
         mCurrentBookUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
         getLoaderManager().initLoader(SALE_BOOK_LOADER, null, this);
     }

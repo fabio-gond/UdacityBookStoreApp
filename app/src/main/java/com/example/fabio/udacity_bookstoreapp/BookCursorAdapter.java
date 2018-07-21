@@ -1,22 +1,13 @@
 package com.example.fabio.udacity_bookstoreapp;
 
-import android.app.Activity;
-import android.app.LoaderManager;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fabio.udacity_bookstoreapp.data.BookContract.BookEntry;
 
@@ -24,8 +15,6 @@ public class BookCursorAdapter extends CursorAdapter{
     public BookCursorAdapter(Context context, Cursor c) {
         super(context, c, 0 /* flags */);
     }
-
-    private static final int EXISTING_BOOK_LOADER = 0;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -65,13 +54,8 @@ public class BookCursorAdapter extends CursorAdapter{
         saleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity) context;
-
                 View parentRow = (View) v.getParent();
-                ListView listView = (ListView) parentRow.getParent();
-                final int position = listView.getPositionForView(parentRow);
-                final long id = listView.getItemIdAtPosition(position);
-
-                mainActivity.saleBook(id);
+                mainActivity.saleBook(parentRow);
             }
         });
     }
